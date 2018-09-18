@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="DDAUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CenterUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

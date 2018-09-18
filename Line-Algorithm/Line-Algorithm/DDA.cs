@@ -74,7 +74,7 @@ namespace Line_Algorithm
         }
         private List<Point> GTOne(decimal k, Point startPoint, Point endPoint)
         {
-            k = 1 / k;
+            k =1 / k;
             List<Point> points = new List<Point>();
             if (k > 0)
             {
