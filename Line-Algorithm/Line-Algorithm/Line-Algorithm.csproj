@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bresenham.cs" />
     <Compile Include="Center.cs" />
     <Compile Include="DDA.cs" />
     <Compile Include="ILineAlgorithm.cs" />
