@@ -115,7 +115,7 @@ namespace Line_Algorithm
                         var newPoint = GetNextPointByY(p, d,step);
                         points.Add(newPoint);
                         p = newPoint;
-                        if (d < 0)
+                        if (d > 0)
                         {
                             d = d + 2 * A + 2 * B;
                         }
@@ -134,13 +134,13 @@ namespace Line_Algorithm
             }
             else
             {
-                var p = endPoint;
+                var p = startPoint;
                 points.Add(p);
                 step = -1;
                 var d = A - 2 * B;
                 while (true)
                 {
-                    if (p.Y > startPoint.Y + 1)
+                    if (p.Y > endPoint.Y + 1)
                     {
                         var newPoint = GetNextPointByY(p, d,step);
                         points.Add(newPoint);
@@ -156,7 +156,7 @@ namespace Line_Algorithm
                     }
                     else
                     {
-                        var newPoint = startPoint;
+                        var newPoint = endPoint;
                         points.Add(newPoint);
                         break;
                     }
@@ -184,13 +184,27 @@ namespace Line_Algorithm
         {
             Point p = new Point();
             p.Y = nowPoint.Y + step;
-            if (d < 0)
+            if (step > 0)
             {
-                p.X = nowPoint.X + 1;
+                if (d > 0)
+                {
+                    p.X = nowPoint.X + 1;
+                }
+                else
+                {
+                    p.X = nowPoint.X;
+                }
             }
             else
             {
-                p.X = nowPoint.X;
+                if (d < 0)
+                {
+                    p.X = nowPoint.X + 1;
+                }
+                else
+                {
+                    p.X = nowPoint.X;
+                }
             }
             return p;
         }
