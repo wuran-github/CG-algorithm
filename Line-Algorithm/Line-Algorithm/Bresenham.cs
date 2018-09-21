@@ -68,33 +68,35 @@ namespace Line_Algorithm
             }
             else
             {
-                //step = -1;
-                //var p = endPoint;
-                //var d = B - 2 * A;
-                //points.Add(p);
-                //while (true)
-                //{
-                //    if (p.X > startPoint.X + 1)
-                //    {
-                //        var newPoint = GetNextPointByX(p, d, step);
-                //        points.Add(newPoint);
-                //        p = newPoint;
-                //        if (d < 0)
-                //        {
-                //            d = d - 2 * A + 2 * B;
-                //        }
-                //        else
-                //        {
-                //            d = d - 2 * A;
-                //        }
-                //    }
-                //    else
-                //    {
-                //        var newPoint = startPoint;
-                //        points.Add(newPoint);
-                //        break;
-                //    }
-                //}
+                step = -1;
+                var p = endPoint;
+                int policy = -2 * deltaY - deltaX;
+                int deltaP1 = -2 * deltaY;
+                int deltaP2 = -2 * deltaY - 2 * deltaX;
+                points.Add(p);
+                while (true)
+                {
+                    if (p.X > startPoint.X + 1)
+                    {
+                        var newPoint = GetNextPointByX(p, policy, step);
+                        points.Add(newPoint);
+                        p = newPoint;
+                        if (policy < 0)
+                        {
+                            policy = policy + deltaP1;
+                        }
+                        else
+                        {
+                            policy = policy + deltaP2;
+                        }
+                    }
+                    else
+                    {
+                        var newPoint = startPoint;
+                        points.Add(newPoint);
+                        break;
+                    }
+                }
             }
             return points;
         }
@@ -103,65 +105,69 @@ namespace Line_Algorithm
             k = 1 / k;
             List<Point> points = new List<Point>();
             var step = 1;
-            //if (k > 0)
-            //{
-            //    var p = startPoint;
-            //    points.Add(p);
-            //    var d = A + 2 * B;
-            //    while (true)
-            //    {
-            //        if (p.Y < endPoint.Y - 1)
-            //        {
-            //            var newPoint = GetNextPointByY(p, d, step);
-            //            points.Add(newPoint);
-            //            p = newPoint;
-            //            if (d < 0)
-            //            {
-            //                d = d + 2 * A + 2 * B;
-            //            }
-            //            else
-            //            {
-            //                d = d + 2 * B;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            var newPoint = endPoint;
-            //            points.Add(newPoint);
-            //            break;
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    var p = endPoint;
-            //    points.Add(p);
-            //    step = -1;
-            //    var d = A - 2 * B;
-            //    while (true)
-            //    {
-            //        if (p.Y > startPoint.Y + 1)
-            //        {
-            //            var newPoint = GetNextPointByY(p, d, step);
-            //            points.Add(newPoint);
-            //            p = newPoint;
-            //            if (d < 0)
-            //            {
-            //                d = d + 2 * A - 2 * B;
-            //            }
-            //            else
-            //            {
-            //                d = d - 2 * B;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            var newPoint = startPoint;
-            //            points.Add(newPoint);
-            //            break;
-            //        }
-            //    }
-            //}
+            if (k > 0)
+            {
+                var p = startPoint;
+                int policy = 2 * deltaX - deltaY;
+                int deltaP1 = 2 * deltaX;
+                int deltaP2 = 2 * deltaX - 2 * deltaY;
+                points.Add(p);
+                while (true)
+                {
+                    if (p.Y < endPoint.Y - 1)
+                    {
+                        var newPoint = GetNextPointByY(p, policy, step);
+                        points.Add(newPoint);
+                        p = newPoint;
+                        if (policy < 0)
+                        {
+                            policy = policy + deltaP1;
+                        }
+                        else
+                        {
+                            policy = policy + deltaP2;
+                        }
+                    }
+                    else
+                    {
+                        var newPoint = endPoint;
+                        points.Add(newPoint);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                var p = startPoint;
+                points.Add(p);
+                step = -1;
+                int policy = 2 * deltaX + deltaY;
+                int deltaP1 = 2 * deltaX;
+                int deltaP2 = 2 * deltaX + 2 * deltaY;
+                while (true)
+                {
+                    if (p.Y > endPoint.Y + 1)
+                    {
+                        var newPoint = GetNextPointByY(p, policy, step);
+                        points.Add(newPoint);
+                        p = newPoint;
+                        if (policy < 0)
+                        {
+                            policy = policy + deltaP1;
+                        }
+                        else
+                        {
+                            policy = policy + deltaP2;
+                        }
+                    }
+                    else
+                    {
+                        var newPoint = endPoint;
+                        points.Add(newPoint);
+                        break;
+                    }
+                }
+            }
             return points;
         }
         private Point GetNextPointByX(Point nowPoint, int policy, int step)
