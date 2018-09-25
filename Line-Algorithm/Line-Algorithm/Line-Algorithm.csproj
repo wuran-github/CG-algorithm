@@ -46,9 +46,11 @@
     <Compile Include="Center.cs" />
     <Compile Include="DDA.cs" />
     <Compile Include="ILineAlgorithm.cs" />
+    <Compile Include="IPolygon.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XScan.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
