@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace Line_Algorithm
 {
-    public struct NETList
-    {
-        public int X { get; set; }
-        public NET NET { get; set; }
-    }
+
     public class ImprovedScan : IPolygon
     {
         public IEnumerable<Point> GetPoints(IEnumerable<Point> points)
@@ -21,36 +17,143 @@ namespace Line_Algorithm
             NET net = new NET();
             var lines = GetLines(points.ToList());
             Dictionary<int, NET> dictNET = new Dictionary<int, NET>();
+            AET aet = null;
             for (int Y = minY; Y <= maxY; Y++)
             {
                 dictNET.Add(Y, null);
                 
                 foreach (var line in lines)
                 {
-                    if (line.StartY == Y)
+                    if (line.StartY == Y || line.EndY == Y)
                     {
-                        NET newNET = new NET();
-                        if (line.StartY > line.EndY)
-                        {
-                            newNET.MaxY = line.StartY;
-                        }
-                        else
-                        {
-                            newNET.MaxY = line.EndY;
-                        }
-                        
-                        if (dictNET[Y] == null)
-                        {
-                            dictNET[Y] = newNET;
-                        }
-                        else
-                        {
-                            InsertNext(dictNET[Y], newNET);
-                        }
+                        AddNET(line, dictNET[Y]);
+                    }
+                    
+                }
+            }
+            for (int Y = minY; Y <= maxY; Y++)
+            {
+                if (dictNET[Y] != null)
+                {
+                    InsertAET(dictNET[Y], aet);
+                }
+                if (aet != null)
+                {
+                    #region 遍历得到点
+                    AET left = null;
+                    AET right = null;
+                    left = aet;
+                    right = aet.Next;
+                    #endregion
+
+                    #region 遍历删除点
+
+                    DeleteAET(aet,Y);
+                    #endregion
+                }
+            }
+
+            return null;
+        }
+        void DeleteAET(AET aet,int Y)
+        {
+            AET nextAET = null;
+            AET nowAET = null;
+            nowAET = aet;
+            nextAET = aet.Next;
+            while (nowAET != null)
+            {
+                if (nowAET.MaxY == Y)
+                {
+                    if (nowAET.Equals(aet))
+                    {
+                        aet = nextAET;
+                    }
+                    else
+                    {
+
                     }
                 }
             }
-            return null;
+        }
+        void InsertAET(NET net,AET aet)
+        {
+            AET lastAET = null;
+            AET nowAET = null;
+            AET tempAET = null;
+            if (net != null)
+            {
+                if (aet == null)
+                {
+                    aet = new AET
+                    {
+                        DeltaX = net.DeltaX,
+                        MaxY = net.MaxY,
+                        X = net.MinX
+                    };
+                }
+                else
+                {
+                    nowAET = aet.Next;
+                    lastAET = aet;
+                    while (nowAET != null)
+                    {
+                        if (nowAET.X > net.MinX)
+                        {
+                            tempAET = new AET()
+                            {
+                                DeltaX = net.DeltaX,
+                                MaxY = net.MaxY,
+                                X = net.MinX,
+                            };
+                            lastAET.Next = tempAET;
+                            tempAET.Next = nowAET;
+                            break;
+                        }
+                        else
+                        {
+                            lastAET = nowAET;
+                            nowAET = nowAET.Next;
+                        }
+                    }
+
+                    if (tempAET == null)
+                    {
+                        tempAET = new AET()
+                        {
+                            DeltaX = net.DeltaX,
+                            MaxY = net.MaxY,
+                            X = net.MinX,
+                        };
+                        lastAET.Next = tempAET;
+                    }
+                }
+            }
+        }
+        void AddNET(Line line,NET origin)
+        {
+            NET newNET = new NET();
+            if (line.StartY > line.EndY)
+            {
+                newNET.MaxY = line.StartY;
+                newNET.MinX = line.EndX;
+                newNET.DeltaX = line.ReciprocalK;
+            }
+            else
+            {
+                newNET.MaxY = line.EndY;
+                newNET.MinX = line.StartX;
+                newNET.DeltaX = line.ReciprocalK;
+            }
+
+            if (origin == null)
+            {
+                origin = newNET;
+            }
+            else
+            {
+                InsertNext(origin, newNET);
+            }
         }
 
         void InsertNext(NET origin,NET newNET)
@@ -86,6 +189,11 @@ namespace Line_Algorithm
                 line.A = A;
                 line.B = B;
                 line.C = C;
+
+                if (y2 != y1)
+                {
+                    line.ReciprocalK = (x2 - x1 + 0m) / (y2 - y1+0m);
+                }
             }
             return lines;
         }

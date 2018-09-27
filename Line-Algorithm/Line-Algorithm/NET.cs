@@ -9,8 +9,8 @@ namespace Line_Algorithm
     public class NET
     {
         public int MaxY { get; set; }
-        public decimal MinX { get; set; }
-        public int DeltaX { get; set; }
+        public int MinX { get; set; }
+        public decimal DeltaX { get; set; }
         public NET Next { get; set; } = null;
     }
 }
