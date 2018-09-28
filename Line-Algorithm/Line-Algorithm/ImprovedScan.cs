@@ -42,24 +42,53 @@ namespace Line_Algorithm
                     #region 遍历得到点
                     AET left = null;
                     AET right = null;
+                    
                     left = aet;
                     right = aet.Next;
+                    while (left != null && right != null)
+                    {
+                        var tempPoints = GetPointsByAET(left, right, Y);
+                        pointList.AddRange(tempPoints);
+                        left = right.Next;
+                        if (left != null)
+                        {
+                            right = left.Next;
+                        }
+                    }
                     #endregion
 
                     #region 遍历删除点
 
                     DeleteAET(aet,Y);
                     #endregion
+
                 }
             }
 
-            return null;
+            return pointList;
+        }
+        List<Point> GetPointsByAET(AET left,AET right,int Y)
+        {
+            List<Point> points = new List<Point>();
+
+            for(int i = left.X; i <= right.X; i++)
+            {
+                Point point = new Point()
+                {
+                    X = i,
+                    Y = Y
+                };
+                points.Add(point);
+            }
+            return points;
         }
         void DeleteAET(AET aet,int Y)
         {
             AET nextAET = null;
             AET nowAET = null;
+            AET lastAET = null;
             nowAET = aet;
+            lastAET = aet;
             nextAET = aet.Next;
             while (nowAET != null)
             {
@@ -71,8 +100,17 @@ namespace Line_Algorithm
                     }
                     else
                     {
-
+                        lastAET.Next = nowAET.Next;
                     }
+                }
+                else
+                {
+                    nowAET.X = (int)(nowAET.DeltaX + nowAET.X);
+                }
+                nowAET = nowAET.Next;
+                if (!lastAET.Equals(aet))
+                {
+                    lastAET = lastAET.Next;
                 }
             }
         }
