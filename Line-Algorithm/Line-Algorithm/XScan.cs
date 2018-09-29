@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Line_Algorithm
 {
-    class XScan : IPolygon
+    public class XScan : IPolygon
     {
         public IEnumerable<Point> GetPoints(IEnumerable<Point> points)
         {
@@ -17,16 +17,19 @@ namespace Line_Algorithm
             for(int Y = minY; Y <= maxY; Y++)
             {
                 var iPoints = Intersection(Y, lines);
-                for (int i = 0; i < iPoints.Count; i += 2)
+                if (iPoints.Count != 0)
                 {
-                    for (int l = iPoints[i].X; l <= iPoints[i + 1].X; l++)
+                    for (int i = 0; i < iPoints.Count; i += 2)
                     {
-                        Point p = new Point()
+                        for (int l = iPoints[i].X; l <= iPoints[i + 1].X; l++)
                         {
-                            X = l,
-                            Y = Y,
-                        };
-                        pointList.Add(p);
+                            Point p = new Point()
+                            {
+                                X = l,
+                                Y = Y,
+                            };
+                            pointList.Add(p);
+                        }
                     }
                 }
             }
@@ -40,7 +43,12 @@ namespace Line_Algorithm
             {
                 int now = i;
                 int next = (i + 1) % lines.Count;
-                if ((Y <= lines[now].StartY && Y <= lines[now].EndY) || (Y >= lines[now].StartY && Y >= lines[now].EndY))
+                int previous = i - 1;
+                if (previous < 0)
+                {
+                    previous += 6;
+                }
+                if ((Y < lines[now].StartY && Y < lines[now].EndY) || (Y > lines[now].StartY && Y > lines[now].EndY))
                 {
                     continue;
                 }
@@ -68,21 +76,25 @@ namespace Line_Algorithm
                 {
                     if(Y==lines[i].EndY)
                     {
+                       
+                    }
+                    else if (Y == lines[i].StartY)
+                    {
                         if (Y < lines[now].StartY)
                         {
                             Point point = new Point()
                             {
-                                X=lines[now].EndX,
-                                Y=lines[now].EndY
+                                X = lines[now].StartX,
+                                Y = lines[now].StartY
                             };
                             points.Add(point);
                         }
-                        if (Y < lines[next].EndY)
+                        if (Y < lines[previous].EndY)
                         {
                             Point point = new Point()
                             {
-                                X = lines[now].EndX,
-                                Y = lines[now].EndY
+                                X = lines[now].StartX,
+                                Y = lines[now].StartY
                             };
                             points.Add(point);
                         }
@@ -95,6 +107,7 @@ namespace Line_Algorithm
                             X=x,
                             Y=Y
                         };
+                        points.Add(point);
                     }
                 }
             }
@@ -124,6 +137,7 @@ namespace Line_Algorithm
                 line.A = A;
                 line.B = B;
                 line.C = C;
+                lines.Add(line);
             }
             return lines;
         }
