@@ -21,21 +21,31 @@ namespace Line_Algorithm
             for (int Y = minY; Y <= maxY; Y++)
             {
                 dictNET.Add(Y, null);
-                
-                foreach (var line in lines)
+                List<Line> lineList = new List<Line>();
+                for(int i=0;i<lines.Count;i++)
                 {
-                    if (line.StartY == Y || line.EndY == Y)
+                    if (lines[i].StartY == Y || lines[i].EndY == Y)
                     {
-                        AddNET(line, dictNET[Y]);
+                        AddNET(lines[i], dictNET, Y);
+                        lineList.Add(lines[i]);
                     }
                     
+                }
+                foreach(var line in lineList)
+                {
+                    lines.Remove(line);
                 }
             }
             for (int Y = minY; Y <= maxY; Y++)
             {
                 if (dictNET[Y] != null)
                 {
-                    InsertAET(dictNET[Y], aet);
+                    var newNET = dictNET[Y];
+                    while (newNET != null)
+                    {
+                        InsertAET(newNET, ref aet);
+                        newNET = newNET.Next;
+                    }
                 }
                 if (aet != null)
                 {
@@ -114,7 +124,7 @@ namespace Line_Algorithm
                 }
             }
         }
-        void InsertAET(NET net,AET aet)
+        void InsertAET(NET net,ref AET aet)
         {
             AET lastAET = null;
             AET nowAET = null;
@@ -168,7 +178,7 @@ namespace Line_Algorithm
                 }
             }
         }
-        void AddNET(Line line,NET origin)
+        void AddNET(Line line, Dictionary<int, NET> dict,int Y)
         {
             NET newNET = new NET();
             if (line.StartY > line.EndY)
@@ -184,19 +194,19 @@ namespace Line_Algorithm
                 newNET.DeltaX = line.ReciprocalK;
             }
 
-            if (origin == null)
+            if (dict[Y] == null)
             {
-                origin = newNET;
+                dict[Y] = newNET;
             }
             else
             {
-                InsertNext(origin, newNET);
+                InsertNext(dict[Y], newNET);
             }
         }
 
         void InsertNext(NET origin,NET newNET)
         {
-            while(origin.Next == null)
+            while(origin.Next != null)
             {
                 origin = origin.Next;
             }
@@ -232,6 +242,7 @@ namespace Line_Algorithm
                 {
                     line.ReciprocalK = (x2 - x1 + 0m) / (y2 - y1+0m);
                 }
+                lines.Add(line);
             }
             return lines;
         }

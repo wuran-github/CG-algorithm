@@ -17,6 +17,8 @@ namespace Line_Algorithm
             for(int Y = minY; Y <= maxY; Y++)
             {
                 var iPoints = Intersection(Y, lines);
+                //排序不是重点，先用C#的排序
+                iPoints = iPoints.OrderBy(en => en.X).ToList();
                 if (iPoints.Count != 0)
                 {
                     for (int i = 0; i < iPoints.Count; i += 2)
@@ -36,6 +38,10 @@ namespace Line_Algorithm
             return pointList;
         }
         
+        void SortPoint(List<Point> points)
+        {
+
+        }
         List<Point> Intersection(int Y, List<Line> lines)
         {
             List<Point> points = new List<Point>();
@@ -80,7 +86,7 @@ namespace Line_Algorithm
                     }
                     else if (Y == lines[i].StartY)
                     {
-                        if (Y < lines[now].StartY)
+                        if (Y < lines[now].EndY)
                         {
                             Point point = new Point()
                             {
@@ -89,7 +95,7 @@ namespace Line_Algorithm
                             };
                             points.Add(point);
                         }
-                        if (Y < lines[previous].EndY)
+                        if (Y < lines[previous].StartY)
                         {
                             Point point = new Point()
                             {

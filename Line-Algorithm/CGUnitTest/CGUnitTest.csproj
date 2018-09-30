@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DDAUnitTest.cs" />
+    <Compile Include="IScanUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CenterUnitTest.cs" />
     <Compile Include="BresenhamUnitTest.cs" />
