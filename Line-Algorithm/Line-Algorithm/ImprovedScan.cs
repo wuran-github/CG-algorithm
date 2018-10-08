@@ -47,6 +47,10 @@ namespace Line_Algorithm
                         newNET = newNET.Next;
                     }
                 }
+                #region 遍历删除点
+
+                DeleteAET(ref aet, Y);
+                #endregion
                 if (aet != null)
                 {
                     #region 遍历得到点
@@ -67,10 +71,8 @@ namespace Line_Algorithm
                     }
                     #endregion
 
-                    #region 遍历删除点
-
-                    DeleteAET(aet,Y);
-                    #endregion
+                    UpdateAET(ref aet);
+                   
 
                 }
             }
@@ -92,8 +94,12 @@ namespace Line_Algorithm
             }
             return points;
         }
-        void DeleteAET(AET aet,int Y)
+        void DeleteAET(ref AET aet,int Y)
         {
+            if (aet == null)
+            {
+                return;
+            }
             AET nextAET = null;
             AET nowAET = null;
             AET lastAET = null;
@@ -113,15 +119,21 @@ namespace Line_Algorithm
                         lastAET.Next = nowAET.Next;
                     }
                 }
-                else
-                {
-                    nowAET.X = (int)(nowAET.DeltaX + nowAET.X);
-                }
                 nowAET = nowAET.Next;
                 if (!lastAET.Equals(aet))
                 {
                     lastAET = lastAET.Next;
                 }
+            }
+        }
+        void UpdateAET(ref AET aet) {
+            AET nowAET = null;
+            nowAET = aet;
+            while (nowAET != null)
+            {
+                nowAET.X = (int)(nowAET.DeltaX + nowAET.X);
+                nowAET = nowAET.Next;
+
             }
         }
         void InsertAET(NET net,ref AET aet)
