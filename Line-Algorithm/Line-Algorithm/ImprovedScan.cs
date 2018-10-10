@@ -120,6 +120,10 @@ namespace Line_Algorithm
                     }
                 }
                 nowAET = nowAET.Next;
+                if (nowAET != null)
+                {
+                    nextAET = nowAET.Next;
+                }
                 if (!lastAET.Equals(aet))
                 {
                     lastAET = lastAET.Next;
@@ -198,12 +202,14 @@ namespace Line_Algorithm
                 newNET.MaxY = line.StartY;
                 newNET.MinX = line.EndX;
                 newNET.DeltaX = line.ReciprocalK;
+                newNET.MaxX = line.StartX;
             }
             else
             {
                 newNET.MaxY = line.EndY;
                 newNET.MinX = line.StartX;
                 newNET.DeltaX = line.ReciprocalK;
+                newNET.MaxX = line.EndX;
             }
 
             if (dict[Y] == null)
@@ -212,18 +218,47 @@ namespace Line_Algorithm
             }
             else
             {
-                InsertNext(dict[Y], newNET);
+                var tempNET = dict[Y];
+                InsertNext(ref tempNET, newNET);
+                dict[Y] = tempNET;
             }
         }
-
-        void InsertNext(NET origin,NET newNET)
+        //需要排序
+        void InsertNext(ref NET origin,NET newNET)
         {
-            while(origin.Next != null)
+            NET lastNET = null;
+            NET nowNET = null;
+            bool inserted = false;
+            nowNET = origin;
+            while (nowNET != null)
             {
-                origin = origin.Next;
+                if (nowNET.MaxX > newNET.MaxX)
+                {
+                    //first node
+                    if (lastNET == null)
+                    {
+                        NET temp = nowNET;
+                        origin = newNET;
+                        newNET.Next = temp;
+                    }
+                    else
+                    {
+                        lastNET.Next = newNET;
+                        newNET.Next = nowNET;
+                    }
+                    inserted = true;
+                    break;
+                }
+                else
+                {
+                    lastNET = nowNET;
+                    nowNET = nowNET.Next;
+                }
             }
-             origin.Next = newNET;
-          
+            if (!inserted)
+            {
+                lastNET.Next = newNET;
+            }
         }
         List<Line> GetLines(List<Point> polygon)
         {
