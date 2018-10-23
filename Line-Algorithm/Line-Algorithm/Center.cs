@@ -13,6 +13,12 @@ namespace Line_Algorithm
             List<Point> points = new List<Point>();
             if (startPoint != null && endPoint != null)
             {
+                if (startPoint.X > endPoint.X)
+                {
+                    var tempPoint = startPoint;
+                    startPoint = endPoint;
+                    endPoint = tempPoint;
+                }
                 if (startPoint.X != endPoint.X)
                 {
                     decimal k = (decimal)((endPoint.Y - startPoint.Y + 0.0) / (endPoint.X - startPoint.X + 0.0));

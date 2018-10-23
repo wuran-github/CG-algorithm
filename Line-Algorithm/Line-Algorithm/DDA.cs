@@ -13,6 +13,12 @@ namespace Line_Algorithm
             List<Point> points = new List<Point>();
             if(startPoint!=null && endPoint != null)
             {
+                if (startPoint.X > endPoint.X)
+                {
+                    var tempPoint = startPoint;
+                    startPoint = endPoint;
+                    endPoint = tempPoint;
+                }
                 if (startPoint.X != endPoint.X) {
                     decimal k =(decimal)((endPoint.Y - startPoint.Y+0.0)/(endPoint.X - startPoint.X+0.0));
                     if (Math.Abs(k) < 1)
@@ -102,7 +108,7 @@ namespace Line_Algorithm
                 points.Add(p);
                 while (true)
                 {
-                    if (p.Y > startPoint.Y + 1)
+                    if (p.Y < startPoint.Y + 1)
                     {
                         var newPoint = MinusGetNextPointByY(p, k);
                         points.Add(newPoint);

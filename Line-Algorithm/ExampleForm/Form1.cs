@@ -28,33 +28,33 @@ namespace ExampleForm
             {
                 new Line_Algorithm.Point()
                 {
-                    X =20,
-                    Y =20
+                    X =200,
+                    Y =200
                 },
                 new Line_Algorithm.Point()
                 {
-                    X =50,
-                    Y =10
+                    X =500,
+                    Y =100
                 },
                  new Line_Algorithm.Point()
                 {
-                    X =110,
-                    Y =30
+                    X =1100,
+                    Y =300
                 },
                   new Line_Algorithm.Point()
                 {
-                    X =110,
-                    Y =80
+                    X =1100,
+                    Y =800
                 },
                    new Line_Algorithm.Point()
                 {
-                    X =50,
-                    Y =50
+                    X =500,
+                    Y =500
                 },
                     new Line_Algorithm.Point()
                 {
-                    X =20,
-                    Y =70
+                    X =200,
+                    Y =700
                 },
             };
         }
